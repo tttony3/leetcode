@@ -45,12 +45,16 @@ int main(){
 	sprintf_s(s, " %c ", easy.findTheDifference(a, b));
 	OutputDebugString(s);
 	*/
+	/*
 	int a[] = { 1,2 ,3};
 	int b[] = { 1,1 };
 	vector<int>  av(a, a + getArrayLen(a));
 	vector<int>  bv(b, b + getArrayLen(b));
+	*/
+
 	char s[128];
-	sprintf_s(s, " %d \n", easy.findContentChildren(av, bv));
+	sprintf_s(s, " %d \n", easy.getSum(2,3));
+
 	OutputDebugString(s);
 	return 0;
 }

@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <map>
 #include <set>
+#include <algorithm>  
 using namespace std;
 Easy::Easy(){
 }
@@ -98,7 +99,18 @@ int Easy::singleNumber(vector<int>& nums){
 }
 
 int Easy::getSum(int a, int b){
-	return 0;
+	int result = 0;
+	int pro = 0;
+	for (int i = 0; i < 32; i++){
+		int tempa = (a >> i)& 1;
+		int tempb = (b >> i)& 1;
+		int s1= tempa^tempb;
+		int co1 = tempa & tempb;
+		result += (s1 ^pro) <<i;
+		pro = (s1 & pro) | co1;
+
+	}
+	return result;
 }
 int Easy::maxDepth(TreeNode* root){
 	return root == NULL ? 0 : max(maxDepth(root->left),maxDepth(root->right)) + 1;
@@ -147,9 +159,15 @@ Easy::TreeNode *Easy::invertTree(Easy::TreeNode* root){
 	return root;
 }
 
+bool search(int g,vector<int>& s,int index){
+	if (s[index] == g){
+		return true;
+	}
+}
+
 
 int Easy::findContentChildren(std::vector<int>& g, std::vector<int>& s){
-	
+
 	map<int, int >sMap;
 	map<int, int >gMap;
 	map<int, int>::iterator sIt;
@@ -157,16 +175,16 @@ int Easy::findContentChildren(std::vector<int>& g, std::vector<int>& s){
 	map<int, int >::iterator itera;
 	map<int, int >::iterator tmpItera;
 	int count = 0;
-	
 
-	for ( int i : s){
-		 itera = sMap.find(i);
+
+	for (int i : s){
+		itera = sMap.find(i);
 		if (itera == sMap.end())
 			sMap[i] = 1;
 		else
-			sMap[i] = sMap[i]+1;
+			sMap[i] = sMap[i] + 1;
 	}
-	for ( int i : g){
+	for (int i : g){
 		tmpItera = sMap.find(i);
 		if (tmpItera != sMap.end()){
 			count++;
@@ -177,17 +195,17 @@ int Easy::findContentChildren(std::vector<int>& g, std::vector<int>& s){
 
 		}
 		else{
-		itera = gMap.find(i);
-		if (itera == gMap.end())
-			gMap[i] = 1;
-		else
-			gMap[i] = gMap[i]+1;
+			itera = gMap.find(i);
+			if (itera == gMap.end())
+				gMap[i] = 1;
+			else
+				gMap[i] = gMap[i] + 1;
 		}
 	}
-	
+
 	bool isContinue = true;
 	for (int delta = 1; isContinue; ++delta){
-		for (sIt = sMap.begin(); sIt != sMap.end(); ){
+		for (sIt = sMap.begin(); sIt != sMap.end();){
 			itera = gMap.find((sIt->first) - delta);
 			if (itera != gMap.end() && itera->second >0 && sIt->second> 0){
 				sIt->second = sIt->second - 1;
@@ -197,25 +215,25 @@ int Easy::findContentChildren(std::vector<int>& g, std::vector<int>& s){
 					gMap.erase(itera);
 				}
 				if (sIt->second == 0){
-					sMap.erase(sIt++);	
+					sMap.erase(sIt++);
 				}
-			else
+				else
 					sIt++;
 			}
 			else sIt++;
 		}
 		if (gMap.size() == 0 || sMap.size() == 0)
 			return count;
-		
+
 		sIt = --sMap.end();
 		gIt = gMap.begin();
 		if (gIt == gMap.end() || sIt == sMap.end())
 			return count;
 		if (sIt->first < gIt->first){
 			isContinue = false;
+			break;
 		}
-	
+
 	}
 	return count;
 }
-
