@@ -16,7 +16,7 @@ int Easy::hammingDistance(int x, int y){
 	int z = x^y;
 	int num = 0;
 	for (int i = 0; i<32;i++)
-		if (((z >> i) & 0x00000000000000000000000000000001)>0)
+		if (((z >> i) & 0x1)>0)
 			num++;
 	return num;
 }
@@ -168,72 +168,214 @@ bool search(int g,vector<int>& s,int index){
 
 int Easy::findContentChildren(std::vector<int>& g, std::vector<int>& s){
 
-	map<int, int >sMap;
-	map<int, int >gMap;
-	map<int, int>::iterator sIt;
-	map<int, int>::iterator gIt;
-	map<int, int >::iterator itera;
-	map<int, int >::iterator tmpItera;
-	int count = 0;
+	return 0;
+}
 
-
-	for (int i : s){
-		itera = sMap.find(i);
-		if (itera == sMap.end())
-			sMap[i] = 1;
-		else
-			sMap[i] = sMap[i] + 1;
+vector<string> Easy::findWords(vector<std::string>& words){
+	vector<string> result;
+	map<char, int > map;
+	char line1[] = { 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p' };
+	char line2[] = { 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l' };
+	char line3[] = { 'z', 'x', 'c', 'v', 'b', 'n', 'm' };
+	for (int i = 0; i < sizeof(line1); i++){
+		map.insert(pair<char, int>(line1[i], 1));
 	}
-	for (int i : g){
-		tmpItera = sMap.find(i);
-		if (tmpItera != sMap.end()){
-			count++;
-			tmpItera->second = tmpItera->second - 1;
-			if (tmpItera->second == 0){
-				sMap.erase(tmpItera);
-			}
+	for (int i = 0; i < sizeof(line2); i++){
+		map.insert(pair<char, int>(line2[i], 2));
+	}
+	for (int i = 0; i < sizeof(line3); i++){
+		map.insert(pair<char, int>(line3[i], 3));
+	}
+	for (int i = 0; i < words.size(); i++){
+		int line = 0;
+		for (int j = 0; j < words[i].size(); j++){
+			std::map<char, int>::iterator sIt;
+			char c = tolower(words[i].at(j));
+			sIt = map.find(c);
+			if (line != sIt->second){
+				if (line == 0)
+					line = sIt->second;
+				else{
+					line = 4;
+					break;
+				}
 
+			}
 		}
+		if (line != 4){
+			result.push_back(words[i]);
+		}
+
+
+	}
+	return result;
+}
+
+int Easy::findComplement(int num){
+	int len = 0;
+	int result = 0;
+	for (int i = 0; i < 32; i++){
+		if ((num >> i) & 0x1 == 0x1 && len<i){
+			len = i;
+		}
+	}
+	for (int i = 0; i < len; i++){
+		if ((num >> i) & 0x1 == 0x1){
+			result += 0x0 << i;
+		}else
+			result += 0x1 << i;
+	}
+	return result;
+}
+
+std::vector<int>  Easy::nextGreaterElement(std::vector<int>& findNums, std::vector<int>& nums){
+	vector<int> result;
+	for (int i = 0; i < findNums.size(); i++){
+		bool isFind = false;
+		for (int j = 0; j < nums.size(); j++){
+			if (nums[j] == findNums[i]){
+				for (int k = j; k < nums.size(); k++){
+					if (nums[k]>findNums[i]){
+						isFind = true;
+						result.push_back(nums[k]);
+						break;
+					}
+				}
+				if (!isFind)
+					result.push_back(-1);
+				break;
+			}
+			
+		}
+		
+	}
+	return result;
+}
+
+int Easy::findMaxConsecutiveOnes(vector<int>& nums){
+	int len = 0;
+	int max = 0;
+	for (int num : nums){
+		if (num == 1)
+			len++;
 		else{
-			itera = gMap.find(i);
-			if (itera == gMap.end())
-				gMap[i] = 1;
-			else
-				gMap[i] = gMap[i] + 1;
+			if (len > max)
+				max = len;
+			len = 0;
 		}
 	}
+	if (len > max)
+		max = len;
+	return max;
+}
 
-	bool isContinue = true;
-	for (int delta = 1; isContinue; ++delta){
-		for (sIt = sMap.begin(); sIt != sMap.end();){
-			itera = gMap.find((sIt->first) - delta);
-			if (itera != gMap.end() && itera->second >0 && sIt->second> 0){
-				sIt->second = sIt->second - 1;
-				itera->second = itera->second - 1;
-				++count;
-				if (itera->second == 0){
-					gMap.erase(itera);
-				}
-				if (sIt->second == 0){
-					sMap.erase(sIt++);
-				}
-				else
-					sIt++;
+vector<int> Easy::constructRectangle(int area) {
+	int l =sqrt(area);
+	int w = l;
+	while (l*w != area){
+		if (l*w > area){
+			l -= 1;
+			w = area / l;
+		}
+		else if (l*w < area){
+			l += 1;
+			w = area / l;
+		}
+	}
+	vector<int> result;
+	result.push_back(l);
+	result.push_back(w);
+	return result;
+}
+
+string int2str(const int &int_temp)
+{
+	stringstream stream;
+	stream << int_temp;
+	string string_temp = stream.str();   //此处也可以用 stream>>string_temp  
+	return string_temp;
+}
+
+vector<string>  Easy::findRelativeRanks(vector<int>& nums) {
+	vector<string> result;
+	
+	vector<int> temp = nums;
+	for (int i = 0; i < temp.size()-1; i++){
+		for (int j = 1; j < temp.size()-i; j++){
+			if (temp[j]>temp[j - 1]){
+				int tmp = temp[j];
+				temp[j] = temp[j - 1];
+				temp[j - 1] = tmp;
 			}
-			else sIt++;
 		}
-		if (gMap.size() == 0 || sMap.size() == 0)
-			return count;
-
-		sIt = --sMap.end();
-		gIt = gMap.begin();
-		if (gIt == gMap.end() || sIt == sMap.end())
-			return count;
-		if (sIt->first < gIt->first){
-			isContinue = false;
-			break;
-		}
-
 	}
-	return count;
+	for (int num : nums){
+		int i = 0;
+		int j = nums.size()-1;
+		while (1){
+			if (num == temp[i]){
+				switch (i)
+				{
+				case 0 :
+					result.push_back("Gold Medal");
+					break;
+				case 1:
+					result.push_back("Silver Medal");
+					break; 
+				case 2:
+					result.push_back("Bronze Medal");
+					break;
+				default:
+					result.push_back(int2str(i+1));
+					break;
+				} 
+					
+				break;
+			}
+			else if (num == temp[j]){
+				switch (j)
+				{
+				case 0:
+					result.push_back("Gold Medal");
+					break;
+				case 1:
+					result.push_back("Silver Medal");
+					break;
+				case 2:
+					result.push_back("Bronze Medal");
+					break;
+				default:
+					result.push_back(int2str(j+1));
+					break;
+				}
+
+				break;
+			}
+			if (num < temp[(i + j) / 2]){
+				i = (i + j) / 2;
+			}
+			else if (num > temp[(i + j) / 2]){
+				j = (i + j) / 2;
+			}
+			else if (num == temp[(i + j) / 2]){
+				switch ((i + j) / 2)
+				{
+				case 0:
+					result.push_back("Gold Medal");
+					break;
+				case 1:
+					result.push_back("Silver Medal");
+					break;
+				case 2:
+					result.push_back("Bronze Medal");
+					break;
+				default:
+					result.push_back(int2str((i + j) / 2+1));
+					break;
+				}
+				break;
+			}
+		}
+	}
+	return result;
 }

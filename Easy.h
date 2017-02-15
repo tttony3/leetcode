@@ -3,7 +3,8 @@
 
 #include<vector>
 #include <string>
-
+#include <ctype.h>
+#include <sstream>
 class Easy
 {
 public:
@@ -28,6 +29,12 @@ public:
 	char findTheDifference(std::string s, std::string t);
 	TreeNode* invertTree(TreeNode* root);// 226. Invert Binary Tree
 	int findContentChildren(std::vector<int>& g, std::vector<int>& s); //455. Assign Cookies
+	std::vector<std::string> findWords(std::vector<std::string>& words);//500. Keyboard Row
+	int findComplement(int num);//476. Number Complement
+	std::vector<int> nextGreaterElement(std::vector<int>& findNums, std::vector<int>& nums);//496. Next Greater Element
+	int findMaxConsecutiveOnes(std::vector<int>& nums);//485. Max Consecutive Ones
+	std::vector<int> constructRectangle(int area);//492. Construct the Rectangle
+	std::vector<std::string> findRelativeRanks(std::vector<int>& nums);//506. Relative Ranks
 };
 
 #endif

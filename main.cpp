@@ -17,7 +17,7 @@ int main(){
 	/*
 	std::vector<std::string> a = easy.fizzBuzz(15);
 	for (std::string b : a)
-		OutputDebugString(b.c_str());
+	OutputDebugString(b.c_str());
 	*/
 
 	//OutputDebugString(easy.reverseString("siths").c_str());
@@ -27,7 +27,7 @@ int main(){
 	std::vector<int> a(n, n + 5);
 	std::vector<int> x = easy.findDisappearedNumbers(a);
 	for (int i = 0; i < x.size(); i++){
-		OutputDebugString(std::to_string(x.at(i)).c_str());
+	OutputDebugString(std::to_string(x.at(i)).c_str());
 	}
 	*/
 
@@ -51,10 +51,12 @@ int main(){
 	vector<int>  av(a, a + getArrayLen(a));
 	vector<int>  bv(b, b + getArrayLen(b));
 	*/
+	int a[] = { 1, 2, 3,4,5 };
+	vector<int>  nums(a, a + getArrayLen(a));
+	easy.findRelativeRanks(nums)
+	;
+	//sprintf_s(s, " %d \n", easy.getSum(2,3));
 
-	char s[128];
-	sprintf_s(s, " %d \n", easy.getSum(2,3));
-
-	OutputDebugString(s);
+	//OutputDebugString(s);
 	return 0;
 }
