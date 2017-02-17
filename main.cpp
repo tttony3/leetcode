@@ -51,9 +51,8 @@ int main(){
 	vector<int>  av(a, a + getArrayLen(a));
 	vector<int>  bv(b, b + getArrayLen(b));
 	*/
-	int a[] = { 1, 2, 3,4,5 };
-	vector<int>  nums(a, a + getArrayLen(a));
-	easy.findRelativeRanks(nums)
+
+	easy.addStrings("1", "9");
 	;
 	//sprintf_s(s, " %d \n", easy.getSum(2,3));
 
